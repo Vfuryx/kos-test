@@ -1,5 +1,14 @@
 {% extends 'layout.html' %} 
 {% block body %}
-<p>hello {{name}}</p>
+
+{% if user %}
+hello {{ user }}
+<form action="/logout" method="post">
+    <input type="submit" value="退出">
+</form>
+{% else %}
+<a href="/login">登陆</a>
+<a href="/register">注册</a>
+{% endif %}
 
 {% endblock %}

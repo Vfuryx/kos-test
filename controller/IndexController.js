@@ -1,12 +1,12 @@
 let fn_index = async(ctx, next) => {
-    ctx.render('index.html',{name:ctx.cookies.get('user')})
+    ctx.render('index.html', {
+        name: '123'
+    })
 
-    // ctx.response.body = 555
 }
 
 
 
 module.exports = {
-    "GET /":fn_index,
-    
+    "GET /": fn_index
 }

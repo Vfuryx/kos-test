@@ -1,0 +1,16 @@
+{% extends 'layout.html'%}
+
+{% block body %}
+<form action="/login" method="post">
+    <label for="user">
+        用户名
+    </label>
+    <input type="text" name='user' value="" >
+
+    <label for="user">
+        密码
+    </label>
+    <input type="text" name='passwd' value="" >
+    <input type="submit" value="提交">
+</form>
+{% endblock %}

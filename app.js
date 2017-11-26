@@ -3,10 +3,11 @@ const isProduction = process.env.NODE_ENV === 'production';
 const Koa = require('koa')
 const template = require('./templating')
 const controller = require('./controller')
+const koaBodyParser = require('koa-bodyparser')
 
 const app = new Koa()
 
-
+app.use(koaBodyParser());
 
 if (!isProduction) {
     //静态文件是由部署在最前面的反向代理服务器（如Nginx）处理的，Node程序不需要处理静态文件
@@ -19,16 +20,20 @@ app.use(template('views', {
     watch: !isProduction
 }))
 
-
+/**
+ * 验证登陆的中间件
+ */
 app.use(async(ctx, next) => {
-    console.log(ctx.path)
-    // console.log(ctx.cookies.get('user'))
-    await next()
-    if (!ctx.cookies.get('user')) {
+ 
+    if (ctx.cookies.get('user') && ctx.path == '/login') {
+        ctx.state.user = ctx.cookies.get('user')
         ctx.response.redirect('/')
-        ctx.cookies.set('user','furyx')
+    } else if (ctx.cookies.get('user')) {
+        ctx.state.user = ctx.cookies.get('user')
     }
-    
+   
+    await next()
+
 })
 
 app.use(controller(__dirname + '/controller/'))
